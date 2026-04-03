@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <p class="eyebrow">User Portal</p>
+    <h2>Welcome, {{ user.username }}</h2>
+    <p>Choose what you want to do next.</p>
+    <div class="actions">
+        <a class="btn" href="{% url 'item_create' %}">Post Item</a>
+        <a class="btn btn-alt" href="{% url 'item_list' %}">Find Item</a>
+    </div>
+</section>
+
+<section class="stats-grid">
+    <div class="card"><h3>Total Posts</h3><p>{{ total_items }}</p></div>
+    <div class="card"><h3>Open Lost</h3><p>{{ lost_items }}</p></div>
+    <div class="card"><h3>Open Found</h3><p>{{ found_items }}</p></div>
+</section>
+
+<section>
+    <h3>Recent Reports</h3>
+    {% if recent_items %}
+        <ul class="item-list">
+            {% for item in recent_items %}
+                <li>
+                    <a href="{% url 'item_detail' item.pk %}">{{ item.title }}</a>
+                    <span>{{ item.get_status_display }} | {{ item.get_category_display }} | {{ item.location }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No reports yet.</p>
+    {% endif %}
+</section>
+{% endblock %}

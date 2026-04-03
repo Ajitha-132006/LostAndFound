@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>My Posted Items</h2>
+{% if items %}
+    <ul class="item-list">
+        {% for item in items %}
+            <li>
+                <a href="{% url 'item_detail' item.pk %}">{{ item.title }}</a>
+                <span>{{ item.get_status_display }} | {{ item.location }} | Resolved: {{ item.is_resolved|yesno:"Yes,No" }}</span>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>You have not posted any items yet.</p>
+{% endif %}
+{% endblock %}

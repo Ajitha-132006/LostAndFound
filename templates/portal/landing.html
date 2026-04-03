@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block body_class %}landing-body{% endblock %}
+
+{% block content %}
+<section class="landing-shell">
+    <div class="landing-panel">
+        <p class="eyebrow">WPL Project</p>
+        <h2>Welcome To Lost And Found Portal</h2>
+        <p class="subtitle">
+            Report items, search quickly, and help students recover belongings across campus.
+        </p>
+
+        <div class="role-grid">
+            <article class="role-card">
+                <h3>Admin</h3>
+                <p>Use Django administration login to manage users and moderate reports.</p>
+                <a class="btn" href="/admin/login/?next=/admin/">Go To Admin Login</a>
+            </article>
+
+            <article class="role-card">
+                <h3>User</h3>
+                <p>Sign in to post lost/found items or search for reported belongings.</p>
+                <div class="actions">
+                    <a class="btn" href="{% url 'login' %}">Sign In</a>
+                    <a class="btn btn-alt" href="{% url 'register' %}">Sign Up</a>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+{% endblock %}
