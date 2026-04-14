@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article class="card detail-card">
+    <h2>Reject Resolution Request</h2>
+    
+    <div class="request-details" style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+        <p><strong>Item:</strong> {{ request_obj.item.title }}</p>
+        <p><strong>Requester:</strong> {{ request_obj.requester.username }}</p>
+        <p><strong>Item Owner:</strong> {{ request_obj.item.owner.username }}</p>
+        <hr>
+        <p><strong>Reason for Resolution:</strong></p>
+        <p>{{ request_obj.reason }}</p>
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_admin_notes">Reason for Rejection (required):</label>
+            <textarea name="admin_notes" id="id_admin_notes" rows="4" placeholder="Explain why this request is being rejected..." required></textarea>
+        </div>
+        <button type="submit" class="btn" style="background-color: #dc3545;">Reject Request</button>
+        <a href="{% url 'pending_resolutions' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</article>
+{% endblock %}

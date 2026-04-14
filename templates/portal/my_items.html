@@ -7,7 +7,16 @@
         {% for item in items %}
             <li>
                 <a href="{% url 'item_detail' item.pk %}">{{ item.title }}</a>
-                <span>{{ item.get_status_display }} | {{ item.location }} | Resolved: {{ item.is_resolved|yesno:"Yes,No" }}</span>
+                <span>{{ item.get_status_display }} | {{ item.location }} | Resolved: {{ item.is_resolved|yesno:"✔,✖" }}</span>
+                {% if not item.is_resolved %}
+                    {% if item.resolution_requests.exists %}
+                        <span>| Request status: {{ item.resolution_requests.first.get_status_display }}</span>
+                    {% else %}
+                        <a href="{% url 'request_resolution' item.pk %}" class="btn btn-small">Request to Resolve</a>
+                    {% endif %}
+                {% else %}
+                    <span>| Status: Resolved</span>
+                {% endif %}
             </li>
         {% endfor %}
     </ul>

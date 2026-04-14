@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article class="card detail-card">
+    <h2>Request Resolution for: {{ item.title }}</h2>
+    
+    <div class="item-summary">
+        <p><strong>Item:</strong> {{ item.title }}</p>
+        <p><strong>Posted by:</strong> {{ item.owner.username }}</p>
+        <p><strong>Status:</strong> {{ item.get_status_display }}</p>
+        <p><strong>Category:</strong> {{ item.get_category_display }}</p>
+        <p><strong>Location:</strong> {{ item.location }}</p>
+        <p><strong>Description:</strong> {{ item.description }}</p>
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">Send Resolution Request</button>
+        <a href="{% url 'item_detail' item.pk %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</article>
+{% endblock %}

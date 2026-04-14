@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article class="card detail-card">
+    <h2>Approve Resolution Request</h2>
+    
+    <div class="request-details" style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+        <p><strong>Item:</strong> {{ request_obj.item.title }}</p>
+        <p><strong>Requester:</strong> {{ request_obj.requester.username }}</p>
+        <p><strong>Item Owner:</strong> {{ request_obj.item.owner.username }}</p>
+        <p><strong>Item Contact Email:</strong> <a href="mailto:{{ request_obj.item.email }}">{{ request_obj.item.email }}</a></p>
+        <p><strong>Item Contact Phone:</strong> <a href="tel:{{ request_obj.item.phone }}">{{ request_obj.item.phone }}</a></p>
+        <hr>
+        <p><strong>Reason for Resolution:</strong></p>
+        <p>{{ request_obj.reason }}</p>
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_admin_notes">Admin Notes (optional):</label>
+            <textarea name="admin_notes" id="id_admin_notes" rows="4" placeholder="Add any notes about this approval..."></textarea>
+        </div>
+        <button type="submit" class="btn" style="background-color: #28a745;">Approve & Mark as Resolved</button>
+        <a href="{% url 'pending_resolutions' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</article>
+{% endblock %}

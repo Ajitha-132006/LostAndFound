@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article class="card">
+    <h2>Resolution Requests Admin Panel</h2>
+    
+    <div class="stats">
+        <p><strong>Pending:</strong> {{ pending_count }}</p>
+        <p><strong>Approved:</strong> {{ approved_count }}</p>
+        <p><strong>Rejected:</strong> {{ rejected_count }}</p>
+    </div>
+
+    {% if requests %}
+        <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+            <thead>
+                <tr style="border-bottom: 2px solid #ddd;">
+                    <th style="padding: 10px; text-align: left;">Item</th>
+                    <th style="padding: 10px; text-align: left;">Requester</th>
+                    <th style="padding: 10px; text-align: left;">Item Owner</th>
+                    <th style="padding: 10px; text-align: left;">Reason</th>
+                    <th style="padding: 10px; text-align: left;">Requested At</th>
+                    <th style="padding: 10px; text-align: left;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for request_obj in requests %}
+                    <tr style="border-bottom: 1px solid #eee;">
+                        <td style="padding: 10px;">
+                            <a href="{% url 'item_detail' request_obj.item.pk %}">{{ request_obj.item.title }}</a>
+                        </td>
+                        <td style="padding: 10px;">{{ request_obj.requester.username }}</td>
+                        <td style="padding: 10px;">{{ request_obj.item.owner.username }}</td>
+                        <td style="padding: 10px;">{{ request_obj.reason|truncatewords:10 }}</td>
+                        <td style="padding: 10px;">{{ request_obj.created_at|date:"Y-m-d H:i" }}</td>
+                        <td style="padding: 10px; text-align: center;">
+                            <form method="post" action="{% url 'update_resolution_request' request_obj.pk %}" style="display: inline-block; min-width: 220px;">
+                                {% csrf_token %}
+                                <select name="action" style="margin-bottom: 8px; width: 100%; padding: 6px;">
+                                    <option value="">Confirm or Deny</option>
+                                    <option value="approve">Confirm</option>
+                                    <option value="deny">Deny</option>
+                                </select>
+                                <input type="text" name="admin_notes" placeholder="Admin notes" style="width: 100%; padding: 6px; margin-bottom: 8px;">
+                                <button type="submit" class="btn" style="background-color: #007bff; padding: 5px 10px; text-decoration: none; color: white; border-radius: 3px; width: 100%;">Update</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p style="margin-top: 20px; color: #666;">No pending resolution requests at the moment.</p>
+    {% endif %}
+</article>
+{% endblock %}

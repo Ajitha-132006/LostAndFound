@@ -9,18 +9,32 @@
     <p><strong>Location:</strong> {{ item.location }}</p>
     <p><strong>Date Reported:</strong> {{ item.date_reported }}</p>
     <p><strong>Posted by:</strong> {{ item.owner.username }}</p>
+    
+    {% if item.email %}
+        <p><strong>Email:</strong> <a href="mailto:{{ item.email }}">{{ item.email }}</a></p>
+    {% endif %}
+    
+    {% if item.phone %}
+        <p><strong>Phone:</strong> <a href="tel:{{ item.phone }}">{{ item.phone }}</a></p>
+    {% endif %}
+    
     <p><strong>Resolved:</strong> {{ item.is_resolved|yesno:"Yes,No" }}</p>
 
     {% if item.image %}
         <img src="{{ item.image.url }}" alt="{{ item.title }}" class="item-image">
     {% endif %}
 
-    {% if user.is_authenticated and not item.is_resolved %}
-        {% if user == item.owner or user.is_staff %}
-            <form method="post" action="{% url 'mark_resolved' item.pk %}">
-                {% csrf_token %}
-                <button type="submit" class="btn">Mark as Resolved</button>
-            </form>
+    {% if user.is_authenticated and not item.is_resolved and user == item.owner %}
+        {% if user_request %}
+            <div class="alert alert-info">
+                <p>You have already sent a resolution request for this item.</p>
+                <p><strong>Status:</strong> {{ user_request.get_status_display }}</p>
+                {% if user_request.admin_notes %}
+                    <p><strong>Admin Notes:</strong> {{ user_request.admin_notes }}</p>
+                {% endif %}
+            </div>
+        {% else %}
+            <a href="{% url 'request_resolution' item.pk %}" class="btn">Request to Resolve</a>
         {% endif %}
     {% endif %}
 </article>
